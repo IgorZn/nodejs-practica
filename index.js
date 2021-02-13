@@ -2,6 +2,11 @@ const express = require('express')
 const path = require('path')
 const exphbs = require('express-handlebars')
 
+// Routers
+const homeRoutes = require('./routes/home')
+const homeAdd = require('./routes/add')
+const homeCourses = require('./routes/courses')
+
 
 const app = express()
 const hbs = exphbs.create({
@@ -24,36 +29,19 @@ app.set('views', 'views')
 // вызвали use -- подгрузка нов. функционала [midlleware]
 // static folder
 app.use(express.static('public'))
+app.use(express.urlencoded({extended: true}))
 
-
+// PORT for server
 const PORT = process.env.PORT || 3000
 
 
 // ROUTER
 // app.get(первым принимает URL, вторым обработчик,)
-app.get('/', (req, res)=>{
-    res.render('index', {
-        title: 'Главная страница',
-        isHome: true
-    })
-})
+app.use('/', homeRoutes)
+app.use('/add', homeAdd)
+app.use('/courses', homeCourses)
 
-app.get('/add', (req, res)=>{
-    res.render('add', {
-        title: 'Добавление курсов',
-        isAdd: true
-    })
-})
-
-app.get('/courses', (req, res)=>{
-    res.render('courses', {
-        title: 'Курсы',
-        isCourses: true
-    })
-})
-
-
-
+// Start server
 app.listen(PORT, () => {
     console.log(`Server has been started on port: ${PORT}`)
 })
