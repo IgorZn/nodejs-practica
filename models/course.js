@@ -38,7 +38,32 @@ class Course {
         }))
 
 
-        console.log('Course', courses)
+    }
+
+    static async update(course) {
+        // get all courses
+        const courses = await Course.getAll()
+
+        // пройтись по массиву и есть у элемента совпадают id,
+        // то записать это id в idx
+        const idx = courses.findIndex(c => c.id === course.id)
+
+        courses[idx] = course
+
+        const path_file = path.join(__dirname, '..', 'data', 'courses.json')
+        return new Promise(((resolve, reject) =>  {
+            fs.writeFile(
+                path_file,
+                    JSON.stringify(courses),
+                    err => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve()
+                }
+            })
+        }))
+
     }
 
     static getAll() {

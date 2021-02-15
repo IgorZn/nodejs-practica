@@ -1,14 +1,1 @@
-[
-  {
-    "title": "ExpressJS",
-    "price": "20002",
-    "img": "https://miro.medium.com/max/6668/1*XP-mZOrIqX7OsFInN2ngRQ.png",
-    "id": "f7c0d037-2b6b-4ef9-8781-6e0a6be56d45"
-  },
-  {
-    "title": "Angular",
-    "price": "12000",
-    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png",
-    "id": "b55e3fc1-4f34-46ab-b2fb-d3691771221d"
-  }
-]
+[{"title":"ExpressJS + всякая хуйня","price":"100000","img":"https://miro.medium.com/max/6668/1*XP-mZOrIqX7OsFInN2ngRQ.png","id":"f7c0d037-2b6b-4ef9-8781-6e0a6be56d45"},{"title":"Angular","price":"12000","img":"https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png","id":"b55e3fc1-4f34-46ab-b2fb-d3691771221d"}]

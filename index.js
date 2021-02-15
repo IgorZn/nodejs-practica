@@ -6,6 +6,7 @@ const exphbs = require('express-handlebars')
 const homeRoutes = require('./routes/home')
 const homeAdd = require('./routes/add')
 const homeCourses = require('./routes/courses')
+const homeCard = require('./routes/card')
 
 
 const app = express()
@@ -40,6 +41,7 @@ const PORT = process.env.PORT || 3000
 app.use('/', homeRoutes)
 app.use('/add', homeAdd)
 app.use('/courses', homeCourses)
+app.use('/card', homeCard)
 
 // Start server
 app.listen(PORT, () => {
