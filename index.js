@@ -29,7 +29,7 @@ app.set('views', 'views')
 
 // вызвали use -- подгрузка нов. функционала [midlleware]
 // static folder
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}))
 
 // PORT for server

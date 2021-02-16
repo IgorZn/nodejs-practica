@@ -14,8 +14,14 @@ router.get('/', async (req, res) => {
     res.render('card', {
         title: 'Корзина',
         isCard: true,
+        courses: card.courses,
+        price: card.price,
         card
     })
+})
+
+router.delete('/remove/:id', async (req, res) => {
+    await Card.remove(req.params.id)
 })
 
 module.exports = router
