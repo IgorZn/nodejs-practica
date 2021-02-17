@@ -2,6 +2,10 @@ const express = require('express')
 const path = require('path')
 const exphbs = require('express-handlebars')
 
+// MONGODB
+const pwd = 'QhdiCOhl6tFVHmBW'
+const db_url = `mongodb+srv://igor_zn:${pwd}@cluster0.eyljf.mongodb.net/<dbname>?retryWrites=true&w=majority`
+
 // Routers
 const homeRoutes = require('./routes/home')
 const homeAdd = require('./routes/add')
