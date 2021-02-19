@@ -1,10 +1,8 @@
 const express = require('express')
 const path = require('path')
 const exphbs = require('express-handlebars')
+const mongoose = require('mongoose')
 
-// MONGODB
-const pwd = 'QhdiCOhl6tFVHmBW'
-const db_url = `mongodb+srv://igor_zn:${pwd}@cluster0.eyljf.mongodb.net/<dbname>?retryWrites=true&w=majority`
 
 // Routers
 const homeRoutes = require('./routes/home')
@@ -47,7 +45,26 @@ app.use('/add', homeAdd)
 app.use('/courses', homeCourses)
 app.use('/card', homeCard)
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server has been started on port: ${PORT}`)
-})
+// MONGODB
+
+async function start(){
+    try {
+        // Connect to DB
+        const pwd = 'QhdiCOhl6tFVHmBW'
+        const db_url = `mongodb://igor_zn:${pwd}@cluster0.eyljf.mongodb.net/<dbname>?retryWrites=true&w=majority`
+        await mongoose.connect(db_url, { useUnifiedTopology: true })
+
+        // Start server
+        app.listen(PORT, () => {
+            console.log(`Server has been started on port: ${PORT}`)
+    })
+    } catch (e) {
+        console.log(e)
+    }
+
+
+
+}
+
+start()
+
