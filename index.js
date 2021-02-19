@@ -51,7 +51,7 @@ async function start(){
     try {
         // Connect to DB
         const pwd = 'QhdiCOhl6tFVHmBW'
-        const db_url = `mongodb://igor_zn:${pwd}@cluster0.eyljf.mongodb.net/<dbname>?retryWrites=true&w=majority`
+        const db_url = `mongodb+srv://igor_zn:${pwd}@cluster0.eyljf.mongodb.net/my_shop`
         await mongoose.connect(db_url, { useUnifiedTopology: true })
 
         // Start server
