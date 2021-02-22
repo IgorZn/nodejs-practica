@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}))
 
 // PORT for server
+const HOST = process.env.HOST || 'http://localhost'
 const PORT = process.env.PORT || 3000
 
 
@@ -52,11 +53,11 @@ async function start(){
         // Connect to DB
         const pwd = 'QhdiCOhl6tFVHmBW'
         const db_url = `mongodb+srv://igor_zn:${pwd}@cluster0.eyljf.mongodb.net/my_shop`
-        await mongoose.connect(db_url, { useUnifiedTopology: true })
+        await mongoose.connect(db_url, { useNewUrlParser: true, useUnifiedTopology: true })
 
         // Start server
         app.listen(PORT, () => {
-            console.log(`Server has been started on port: ${PORT}`)
+            console.log(`Server has been started on port: ${HOST}:${PORT}`)
     })
     } catch (e) {
         console.log(e)
