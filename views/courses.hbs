@@ -15,7 +15,7 @@
                   <a href="/courses/{{_id}}" target="_blank">Открыть курс</a>
                   <a href="/courses/{{_id}}/edit?allow=true" target="_blank">Редактировать</a>
                     <form action="/card/add" method="post">
-                        <input type="hidden" value="{{id}}" name="id">
+                        <input type="hidden" value="{{_id}}" name="id">
                         <button type="submit" class="btn btn-primary">Купить</button>
                     </form>
                 </div>
