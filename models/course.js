@@ -17,4 +17,15 @@ const course = new Schema({
     }
 })
 
+// удаление _id и замена его на id (без н/подчеркивания)
+course.method('toClient', function () {
+    const _course = this.toObject()
+
+    course.id = _course._id
+    delete course._id
+
+    return course
+})
+
+
 module.exports = model('Course', course)
