@@ -12,6 +12,7 @@ const homeRoutes = require('./routes/home')
 const homeAdd = require('./routes/add')
 const homeCourses = require('./routes/courses')
 const homeCard = require('./routes/card')
+const homeOrders = require('./routes/orders')
 
 // Main APP
 const app = express()
@@ -58,6 +59,8 @@ app.use('/', homeRoutes)
 app.use('/add', homeAdd)
 app.use('/courses', homeCourses)
 app.use('/card', homeCard)
+app.use('/orders', homeOrders)
+
 
 // MONGODB
 async function start(){
