@@ -4,7 +4,8 @@ const Order = require('../models/order')
 
 router.get('/', async (req, res) => {
     try {
-        const orders = Order.find({'user.userId': req.user.userId})
+        const orders = await Order.find(
+            {'user.userId': req.user._id})
             .populate('user.userId')
 
         res.render('orders', {
@@ -14,13 +15,24 @@ router.get('/', async (req, res) => {
             return {
                 ...o._doc,
                 price: o.courses.reduce((total, c) => {
-                    return total += c.count * c.courses.price
+                    return total += c.count * c.course.price
                 }, 0)
             }
         })
     })
-    } catch (e) {
 
+        // console.log('ORDERS_GET__orders', orders)
+        console.log('ORDERS_GET_MAP__orders', orders.map(o => {
+            return {
+                ...o._doc,
+                price: o.courses.reduce((total, c) => {
+                    return total += c.count * c.course.price
+                }, 0)
+            }
+        }))
+
+    } catch (e) {
+        console.log(e)
     }
 
 })
@@ -37,6 +49,7 @@ router.post('/', async (req, res) => {
             count: i.count,
             course: {...i.courseId._doc}
         }))
+        console.log('ORDERS__courses', courses)
 
         const order = new Order({
             user: {
