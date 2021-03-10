@@ -1,6 +1,6 @@
 <h1>Мои заказы</h1>
 
-{{#if orders.lengh}}
+{{#if orders.length}}
     {{#each orders}}
         <div class="row">
             <div class="col s6 offset-s3">
@@ -9,13 +9,13 @@
                         <span class="card-title">
                             Заказ <small>{{_id}}</small>
                         </span>
-                        <p>{{date}}</p>
+                        <p class="date">{{date}}</p>
                         <p><em>{{user.userID.name}}</em>{{user.userID.email}}</p>
                         <ol>
-                            {{#each}}
-                            <li>
-                                {{coutse.title}} (x <strong>{{count}}</strong>)
-                            </li>
+                            {{#each courses}}
+                                <li>
+                                    {{this.title}} (x <strong>{{this.count}}</strong>)
+                                </li>
                             {{/each}}
                         </ol>
 
