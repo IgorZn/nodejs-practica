@@ -39,3 +39,7 @@
 thead {
     font-weight: bold;
 }
+
+.auth {
+    padding-top: 2rem;
+}

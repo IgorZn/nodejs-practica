@@ -13,6 +13,7 @@ const homeAdd = require('./routes/add')
 const homeCourses = require('./routes/courses')
 const homeCard = require('./routes/card')
 const homeOrders = require('./routes/orders')
+const authRoutes = require('./routes/auth')
 
 // Main APP
 const app = express()
@@ -60,6 +61,7 @@ app.use('/add', homeAdd)
 app.use('/courses', homeCourses)
 app.use('/card', homeCard)
 app.use('/orders', homeOrders)
+app.use('/auth', authRoutes)
 
 
 // MONGODB

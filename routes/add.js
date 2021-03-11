@@ -3,7 +3,7 @@ const router = Router()
 const Course = require('../models/course')
 
 
-router.get('/', (req, res)=>{
+router.get('/', async (req, res)=>{
     res.render('add', {
         title: 'Добавление курсов',
         isAdd: true
