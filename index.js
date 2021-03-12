@@ -3,6 +3,8 @@ const express = require('express')
 const path = require('path')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+const session = require('express-session')
+const varMiddleWare = require('./middleware/variables')
 
 // User
 const User = require('./models/user')
@@ -38,16 +40,23 @@ app.set('views', 'views')
 // static folder
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}))
+app.use(session({
+    secret: 'some_secret_value',
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(varMiddleWare)
 
-app.use(async (req, res, next) => {
-    try {
-        const user = await User.findById('6033da1429a5f05f9c5552d9')
-        req.user = user
-        next()
-    } catch (e) {
-        console.log(e)
-    }
-})
+// Find user
+// app.use(async (req, res, next) => {
+//     try {
+//         const user = await User.findById('6033da1429a5f05f9c5552d9')
+//         req.user = user
+//         next()
+//     } catch (e) {
+//         console.log(e)
+//     }
+// })
 
 // HOST and PORT
 const HOST = process.env.HOST || 'http://localhost'
