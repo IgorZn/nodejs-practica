@@ -85,15 +85,15 @@ async function start(){
             useFindAndModify: false
         })
         // User
-        const candidate = await User.findOne()
-        if (!candidate) {
-            const user = new User({
-                email: 'vova@mail.ru',
-                name: 'Vovas',
-                cart: {items: []}
-            })
-            await user.save()
-        }
+        // const candidate = await User.findOne()
+        // if (!candidate) {
+        //     const user = new User({
+        //         email: 'vova@mail.ru',
+        //         name: 'Vovas',
+        //         cart: {items: []}
+        //     })
+        //     await user.save()
+        // }
 
         // Start server
         app.listen(PORT, () => {
