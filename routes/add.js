@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
         title: req.body.title,
         price: req.body.price,
         img: req.body.img,
-        userId: req.user._id
+        userId: req.session.userId
     })
     console.log('ADD', course)
 
