@@ -3,7 +3,21 @@ const express = require('express')
 const path = require('path')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
+
+// session and MongoStore, go one after another otherwise will NOT work
 const session = require('express-session')
+const MongoStore = require('connect-mongodb-session')(session)
+
+
+// MONGODB
+const pwd = 'QhdiCOhl6tFVHmBW'
+const MONGODB_URI = `mongodb+srv://igor_zn:${pwd}@cluster0.eyljf.mongodb.net/my_shop`
+const store = new MongoStore({
+    collection: 'sessions',
+    uri: MONGODB_URI
+})
+
+
 const varMiddleWare = require('./middleware/variables')
 
 // User
@@ -43,7 +57,8 @@ app.use(express.urlencoded({extended: true}))
 app.use(session({
     secret: 'some_secret_value',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store
 }))
 app.use(varMiddleWare)
 
@@ -73,13 +88,12 @@ app.use('/orders', homeOrders)
 app.use('/auth', authRoutes)
 
 
-// MONGODB
+
+
 async function start(){
     try {
         // Connect to DB
-        const pwd = 'QhdiCOhl6tFVHmBW'
-        const db_url = `mongodb+srv://igor_zn:${pwd}@cluster0.eyljf.mongodb.net/my_shop`
-        await mongoose.connect(db_url, {
+        await mongoose.connect(MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false

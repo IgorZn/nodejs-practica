@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "connect-mongodb-session": "^2.4.1",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
     "mongoose": "^5.11.17",
