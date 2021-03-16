@@ -17,8 +17,9 @@ const store = new MongoStore({
     uri: MONGODB_URI
 })
 
-
+ // Various
 const varMiddleWare = require('./middleware/variables')
+const userMiddleWare = require('./middleware/user')
 
 // User
 const User = require('./models/user')
@@ -60,7 +61,9 @@ app.use(session({
     saveUninitialized: false,
     store
 }))
+
 app.use(varMiddleWare)
+app.use(userMiddleWare)
 
 // Find user
 // app.use(async (req, res, next) => {
