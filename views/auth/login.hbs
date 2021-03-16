@@ -12,7 +12,7 @@
         <h3>Войти в магазин</h3>
         <!-- Login -->
         <form action="/auth/login" method="post">
-
+            <!--    user_name (email)    -->
             <div class="input-field">
                   <input id="email" name="email" type="email" class="validate" required>
                   <label for="email">Email</label>
@@ -34,7 +34,14 @@
         <h3>Создать аккаунт</h3>
         <!-- Registration -->
         <form action="/auth/register" method="post">
+            <!--   reg name     -->
+            <div class="input-field">
+                  <input id="name" name="name" type="text" class="validate" required>
+                  <label for="name">Выше имя</label>
+                  <span class="helper-text" data-error="Введите имя" data-success="OK"></span>
+            </div>
 
+            <!--   reg email     -->
             <div class="input-field">
                   <input id="remail" name="email" type="email" class="validate" required>
                   <label for="remail">Email</label>
@@ -48,7 +55,7 @@
                 <span class="helper-text" data-error="Введите пароль" data-success="OK"></span>
             </div>
 
-            <!-- Confirm -->
+            <!-- Confirm Password -->
             <div class="input-field">
                   <input id="confirm" name="confirm" type="password" class="validate" required>
                   <label for="confirm">Пароль еще раз</label>
