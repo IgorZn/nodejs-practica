@@ -4,6 +4,9 @@ const path = require('path')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 
+// var cookieParser = require('cookie-parser')
+const csrf = require('csurf')
+
 // session and MongoStore, go one after another otherwise will NOT work
 const session = require('express-session')
 const MongoStore = require('connect-mongodb-session')(session)
@@ -31,6 +34,10 @@ const homeCourses = require('./routes/courses')
 const homeCard = require('./routes/card')
 const homeOrders = require('./routes/orders')
 const authRoutes = require('./routes/auth')
+
+// setup route middlewares
+// var csrfProtection = csrf({ cookie: true })
+// var parseForm = bodyParser.urlencoded({ extended: false })
 
 // Main APP
 const app = express()
@@ -62,6 +69,7 @@ app.use(session({
     store
 }))
 
+app.use(csrf())
 app.use(varMiddleWare)
 app.use(userMiddleWare)
 

@@ -16,6 +16,13 @@
                     {{#if @root.isAuth}}
                           <a href="/courses/{{_id}}/edit?allow=true" target="_blank">Редактировать</a>
                             <form action="/card/add" method="post">
+
+                                <!--
+                                req.csrfToken() вставит в value `token,
+                                который будет назначен res.locals.csrf в  variables.js
+                                -->
+                                <input type="hidden" name="_csrf" value="{{@root.csrf}}">
+
                                 <input type="hidden" value="{{_id}}" name="id">
                                 <button type="submit" class="btn btn-primary">Купить</button>
                             </form>

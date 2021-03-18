@@ -19,5 +19,13 @@
         <span class="helper-text" data-error="Введите URL картинки" data-success="OK">Введите URL картинки</span>
     </div>
 
+
+    <!--
+    req.csrfToken() вставит в value `token,
+    который будет назначен res.locals.csrf в  variables.js
+    -->
+    <input type="hidden" name="_csrf" value="{{csrf}}">
+
+
     <button class="btn btn-primary">Добавить курс</button>
 </form>

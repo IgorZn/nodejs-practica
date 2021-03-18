@@ -25,6 +25,10 @@
                 <span class="helper-text" data-error="Введите пароль" data-success="OK"></span>
             </div>
 
+            <!--  req.csrfToken() вставит в value `token,
+            который будет назначен res.locals.csrf в  variables.js  -->
+            <input type="hidden" name="_csrf" value="{{csrf}}">
+
             <button class="btn btn-primary" type="submit">Войти</button>
 
         </form>
@@ -61,6 +65,12 @@
                   <label for="confirm">Пароль еще раз</label>
                 <span class="helper-text" data-error="Введите пароль еще раз" data-success="OK"></span>
             </div>
+
+            <!--
+            req.csrfToken() вставит в value `token,
+            который будет назначен res.locals.csrf в  variables.js
+            -->
+            <input type="hidden" name="_csrf" value="{{csrf}}">
 
             <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
 

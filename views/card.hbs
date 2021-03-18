@@ -34,6 +34,13 @@
     </p>
 
         <form action="/orders" method="post">
+
+            <!--
+            req.csrfToken() вставит в value `token,
+            который будет назначен res.locals.csrf в  variables.js
+            -->
+            <input type="hidden" name="_csrf" value="{{csrf}}">
+
             <button type="submit" class="btn">Сделать заказ</button>
         </form>
 {{else}}
