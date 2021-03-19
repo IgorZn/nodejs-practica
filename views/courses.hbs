@@ -28,6 +28,11 @@
                             </form>
                         </div>
                           <form action="/courses/remove" method="post">
+                              <!--
+                            req.csrfToken() вставит в value `token,
+                            который будет назначен res.locals.csrf в variables.js
+                               -->
+                            <input type="hidden" name="_csrf" value="{{@root.csrf}}">
                             <input type="hidden" name="id" value="{{_id}}">
                             <button class="btn red">Удалить курс</button>
                         </form>
