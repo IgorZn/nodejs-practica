@@ -14,12 +14,16 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "cypress": "^6.8.0",
     "express": "^4.17.1",
     "nodemon": "^2.0.7"
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "node_modules\\.bin\\cypress run --browser firefox",
+    "runtests": "npm run test -- ",
+    "cypress:open": "npx cypress open --browser firefox"
   },
   "keywords": [],
   "author": "",
