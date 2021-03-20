@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 const logIn = () => {
     const { username, password } = Cypress.env('credentials');
 
@@ -25,6 +27,62 @@ const getCSRF = () =>{
 }
 
 describe('Authentication', function () {
+
+    describe('Another describe inside Authentication describe', function () {
+        // This another block and it's stand alone block
+
+        beforeEach('Code for every test', () => {
+            // repetitive code
+            // for example login
+        })
+
+        it.only('Can log in.', function () {
+            cy.visit('/auth/login#login');
+            cy.contains('div#login', 'Войти в магазин').then(loginForm => {
+                const emailField = loginForm.find('label[for="email"]').text()
+                const passField = loginForm.find('label[for="password"]').text()
+
+                expect(emailField).to.equal('Email')
+                expect(passField).to.equal('Пароль')
+            });
+
+        });
+
+        it('Can sign up.', function () {
+            cy.server();
+            cy.route({
+                method: 'POST',
+                url: '**/auth/register/',
+                status: 201,
+                response: {
+                    'id': 1,
+                    'name': 'gary.cole@example.com',
+                    'remail': 'Gary',
+                    'last_name': 'Cole',
+                    'group': 'driver',
+                    'photo': '/media/images/photo.jpg'
+                }
+            }).as('signUp');
+
+            cy.visit('/auth/login#login');
+            cy.get('a').contains('Регистрация').click();
+            cy.get('input#name').type('Gary', {force: true});
+            cy.get('input#remail').type('moodak@example.com', {force: true});
+            cy.get('input#rpassword').type('pAssw0rd', {log: false, force: true});
+            cy.get('input#confirm').type('pAssw0rd', {log: false, force: true});
+
+            cy.get('button').contains('Зарегистрироваться').click();
+            // cy.wait('@signUp'); // new
+            cy.hash().should('eq', '');
+        });
+
+    });
+
+    beforeEach('Code for every test', () => {
+        // repetitive code
+        // for example login
+    })
+
     it('Can log in.', function () {
         logIn();
         cy.on('uncaught:exception', (err, runnable) => {
