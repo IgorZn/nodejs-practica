@@ -31,12 +31,12 @@ describe('Authentication', function () {
     describe('Another describe inside Authentication describe', function () {
         // This another block and it's stand alone block
 
-        beforeEach('Code for every test', () => {
+        beforeEach('Using contains and JQuery', () => {
             // repetitive code
             // for example login
         })
 
-        it.only('Can log in.', function () {
+        it('Contains JQuery', function () {
             cy.visit('/auth/login#login');
             cy.contains('div#login', 'Войти в магазин').then(loginForm => {
                 const emailField = loginForm.find('label[for="email"]').text()
@@ -48,35 +48,46 @@ describe('Authentication', function () {
 
         });
 
-        it('Can sign up.', function () {
-            cy.server();
-            cy.route({
-                method: 'POST',
-                url: '**/auth/register/',
-                status: 201,
-                response: {
-                    'id': 1,
-                    'name': 'gary.cole@example.com',
-                    'remail': 'Gary',
-                    'last_name': 'Cole',
-                    'group': 'driver',
-                    'photo': '/media/images/photo.jpg'
-                }
-            }).as('signUp');
 
+        it('Добро пожаловать', function () {
+            cy.visit('/');
+
+            // 1
+            cy.get('.container').should('contain', 'Добро пожаловать')
+
+            // 2
+            cy.get('.container').then( welcomeText => {
+                expect(welcomeText.find('h2').text()).to.equal("Добро пожаловать")
+            });
+
+            // 3
+            cy.get('.container').find('h2').invoke('text').then( text => {
+                expect(text).to.equal("Добро пожаловать")
+            })
+
+            // 4
+            cy.contains('nav','Главная')
+                .find('li.active')
+                // .click()
+                // .find('li')
+                .invoke('attr', 'class')
+                .should('contain', 'active')
+
+            })
+
+        it.only('Check login form', function () {
             cy.visit('/auth/login#login');
-            cy.get('a').contains('Регистрация').click();
-            cy.get('input#name').type('Gary', {force: true});
-            cy.get('input#remail').type('moodak@example.com', {force: true});
-            cy.get('input#rpassword').type('pAssw0rd', {log: false, force: true});
-            cy.get('input#confirm').type('pAssw0rd', {log: false, force: true});
 
-            cy.get('button').contains('Зарегистрироваться').click();
-            // cy.wait('@signUp'); // new
-            cy.hash().should('eq', '');
+            cy.contains('div','Войти в магазин')
+                .then(enter => {
+                    cy.wrap(enter).invoke('prop', 'innerText')
+                        .should('contain', "Email")
+                })
+
+            })
+
         });
 
-    });
 
     beforeEach('Code for every test', () => {
         // repetitive code
