@@ -28,67 +28,6 @@ const getCSRF = () =>{
 
 describe('Authentication', function () {
 
-    describe('Another describe inside Authentication describe', function () {
-        // This another block and it's stand alone block
-
-        beforeEach('Using contains and JQuery', () => {
-            // repetitive code
-            // for example login
-        })
-
-        it('Contains JQuery', function () {
-            cy.visit('/auth/login#login');
-            cy.contains('div#login', 'Войти в магазин').then(loginForm => {
-                const emailField = loginForm.find('label[for="email"]').text()
-                const passField = loginForm.find('label[for="password"]').text()
-
-                expect(emailField).to.equal('Email')
-                expect(passField).to.equal('Пароль')
-            });
-
-        });
-
-
-        it('Добро пожаловать', function () {
-            cy.visit('/');
-
-            // 1
-            cy.get('.container').should('contain', 'Добро пожаловать')
-
-            // 2
-            cy.get('.container').then( welcomeText => {
-                expect(welcomeText.find('h2').text()).to.equal("Добро пожаловать")
-            });
-
-            // 3
-            cy.get('.container').find('h2').invoke('text').then( text => {
-                expect(text).to.equal("Добро пожаловать")
-            })
-
-            // 4
-            cy.contains('nav','Главная')
-                .find('li.active')
-                // .click()
-                // .find('li')
-                .invoke('attr', 'class')
-                .should('contain', 'active')
-
-            })
-
-        it.only('Check login form', function () {
-            cy.visit('/auth/login#login');
-
-            cy.contains('div','Войти в магазин')
-                .then(enter => {
-                    cy.wrap(enter).invoke('prop', 'innerText')
-                        .should('contain', "Email")
-                })
-
-            })
-
-        });
-
-
     beforeEach('Code for every test', () => {
         // repetitive code
         // for example login
@@ -139,5 +78,88 @@ describe('Authentication', function () {
         // cy.wait('@signUp'); // new
         cy.hash().should('eq', '');
     });
+
+    it('Contains JQuery', function () {
+            cy.visit('/auth/login#login');
+            cy.contains('div#login', 'Войти в магазин').then(loginForm => {
+                const emailField = loginForm.find('label[for="email"]').text()
+                const passField = loginForm.find('label[for="password"]').text()
+
+                expect(emailField).to.equal('Email')
+                expect(passField).to.equal('Пароль')
+            });
+
+        });
+
+    it('Добро пожаловать', function () {
+        cy.visit('/');
+
+        // 1
+        cy.get('.container').should('contain', 'Добро пожаловать')
+
+        // 2
+        cy.get('.container').then( welcomeText => {
+            expect(welcomeText.find('h2').text()).to.equal("Добро пожаловать")
+        });
+
+        // 3
+        cy.get('.container').find('h2').invoke('text').then( text => {
+            expect(text).to.equal("Добро пожаловать")
+        })
+
+        // 4
+        cy.contains('nav','Главная')
+            .find('li.active')
+            // .click()
+            // .find('li')
+            .invoke('attr', 'class')
+            .should('contain', 'active')
+
+        });
+
+    it('Check login form', function () {
+        cy.visit('/auth/login#login');
+
+        cy.contains('div','Войти в магазин')
+            .then(enter => {
+                cy.wrap(enter).invoke('prop', 'innerText')
+                    .should('contain', "Email")
+            })
+
+        });
+
+    it('Can NOT sign up if user exist.', function () {
+
+        cy.visit('/auth/login#register');
+        cy.get('a').contains('Регистрация').click();
+        cy.get('input#name').type('Gary', {force: true});
+        cy.get('input#remail').type('moodak@example.com', {force: true});
+        cy.get('input#rpassword').type('pAssw0rd', {log: false, force: true});
+        cy.get('input#confirm').type('pAssw0rd', {log: false, force: true});
+
+        cy.get('button').contains('Зарегистрироваться').click();
+        cy.get('.alert').should('contain', 'Пользователь с таким адресом уже существует');
+        cy.location().should((location) => {
+          expect(location.hash).to.eq('#register')
+          expect(location.protocol).to.eq('http:')
+        });
+
+    });
+
+    it('Can NOT log message if password is wrong', function () {
+        // Log into the app.
+        cy.visit('/auth/login#login');
+        const { username} = Cypress.env('credentials');
+        cy.get('input#email').type(username, {force: true});
+        cy.get('input#password').type('password', { log: false, force: true});
+        cy.get('button').contains('Войти').click();
+        cy.get('.alert').should('contain', 'Логин или пароль введены не правильно');
+        cy.location().should((location) => {
+          expect(location.hash).to.eq('#login')
+          expect(location.protocol).to.eq('http:')
+        })
+
+    });
+
 
 });

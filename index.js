@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 
 // var cookieParser = require('cookie-parser')
 const csrf = require('csurf')
+const flash = require('connect-flash')
 
 // session and MongoStore, go one after another otherwise will NOT work
 const session = require('express-session')
@@ -25,7 +26,7 @@ const varMiddleWare = require('./middleware/variables')
 const userMiddleWare = require('./middleware/user')
 
 // User
-const User = require('./models/user')
+// const User = require('./models/user')
 
 // Routers
 const homeRoutes = require('./routes/home')
@@ -70,6 +71,7 @@ app.use(session({
 }))
 
 app.use(csrf())
+app.use(flash())
 app.use(varMiddleWare)
 app.use(userMiddleWare)
 

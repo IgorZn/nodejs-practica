@@ -8,20 +8,28 @@ const User = require('../models/user')
 router.get('/login', async (req, res)=>{
     res.render('auth/login', {
         title: 'Авторизация',
-        isLogin: true
+        isLogin: true,
+        errorLogin: req.flash('errorLogin'),
+        errorRegister: req.flash('errorRegister')
     })
 })
 
 router.post('/login', async (req, res)=>{
     try {
+        // получить логин и пароль из "сессии"
         const {email, password} = req.body
 
-
+        // найти пользователся в БД
         const candidate = await User.findOne({email})
-        if (candidate) {
-            const areSame = await bcrypt.compare(password, candidate.password)
-            if (areSame) {
 
+        // если нашелся
+        if (candidate) {
+            // сравнить пароль из "сессии" и из БД
+            const areSame = await bcrypt.compare(password, candidate.password)
+            // если совпали
+            if (areSame) {
+                // на `user` назначить `candidate`, сохранить
+                // и перекинуть на гл. страницу
                 const user = await candidate
                 req.session.user = user
                 req.session.isAuthenticated = true
@@ -32,14 +40,13 @@ router.post('/login', async (req, res)=>{
                     res.redirect('/')
                 } )
 
-
-
             } else {
+                req.flash('errorLogin', 'Логин или пароль введены не правильно')
                 res.redirect('/auth/login#login')
             }
 
-
         } else {
+            req.flash('errorLogin', 'Такого пользователя не существует')
             res.redirect('/auth/login#login')
         }
 
@@ -62,7 +69,9 @@ router.post('/register', async (req, res) => {
         const candidate = await User.findOne({ email })
 
         if (candidate) {
-            res.redirect('/auth/register#register')
+            // теперь эту ошибку надо передать на клиента, т.е. в GET
+            req.flash('errorRegister', 'Пользователь с таким адресом уже существует')
+            res.redirect('/auth/login#register')
         } else {
             const hashPassword = await bcrypt.hash(password, 10)
             const user = new User({

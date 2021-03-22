@@ -43,3 +43,11 @@ thead {
 .auth {
     padding-top: 2rem;
 }
+
+.alert {
+    padding-top: .5rem;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 1rem;
+    background: rgba(255, 0, 0, 3);
+}

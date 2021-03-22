@@ -9,6 +9,11 @@
       </ul>
     </div>
     <div id="login" class="col s6 offset-s3">
+        <!--  выводим ошибку, если есть    -->
+        {{#if errorLogin}}
+            <p class="alert">{{errorLogin}}</p>
+        {{/if}}
+
         <h3>Войти в магазин</h3>
         <!-- Login -->
         <form action="/auth/login" method="post">
@@ -35,6 +40,11 @@
 
     </div>
     <div id="register" class="col s6 offset-s3">
+        <!--  выводим ошибку, если есть    -->
+        {{#if errorRegister}}
+            <p class="alert">{{errorRegister}}</p>
+        {{/if}}
+
         <h3>Создать аккаунт</h3>
         <!-- Registration -->
         <form action="/auth/register" method="post">
