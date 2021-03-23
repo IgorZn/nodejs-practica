@@ -1,4 +1,4 @@
-def appens(val, box=None or [].__hash__):
+def appens(val, box=[]):
     box.append(val)
     print(box)
     return box
@@ -11,20 +11,20 @@ b = copy.deepcopy(a)
 
 
 if __name__ == '__main__':
-    # appens(1)
-    # appens(2)
-    # appens('hui')
+    appens(1)
+    appens(2)
+    appens('hui')
 
-    print(f'a {a}')
-    print(f'b {b}')
-
-    a[0] = 0
-
-    print(f'a {a}')
-    print(f'b {b} -- diff obj')
-
-    a[8][0] = 0
-    a[7][0][0] = 111
-
-    print(f'a {a}')
-    print(f'b {b} -- diff obj')
+    # print(f'a {a}')
+    # print(f'b {b}')
+    #
+    # a[0] = 0
+    #
+    # print(f'a {a}')
+    # print(f'b {b} -- diff obj')
+    #
+    # a[8][0] = 0
+    # a[7][0][0] = 111
+    #
+    # print(f'a {a}')
+    # print(f'b {b} -- diff obj')

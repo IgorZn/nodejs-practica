@@ -4,6 +4,8 @@ const path = require('path')
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose')
 
+const keys = require('./keys')
+
 // var cookieParser = require('cookie-parser')
 const csrf = require('csurf')
 const flash = require('connect-flash')
@@ -14,11 +16,9 @@ const MongoStore = require('connect-mongodb-session')(session)
 
 
 // MONGODB
-const pwd = 'QhdiCOhl6tFVHmBW'
-const MONGODB_URI = `mongodb+srv://igor_zn:${pwd}@cluster0.eyljf.mongodb.net/my_shop`
 const store = new MongoStore({
     collection: 'sessions',
-    uri: MONGODB_URI
+    uri: keys.MONGODB_URI
 })
 
  // Various
@@ -64,7 +64,7 @@ app.set('views', 'views')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}))
 app.use(session({
-    secret: 'some_secret_value',
+    secret: keys.SECRET,
     resave: false,
     saveUninitialized: false,
     store
@@ -106,7 +106,7 @@ app.use('/auth', authRoutes)
 async function start(){
     try {
         // Connect to DB
-        await mongoose.connect(MONGODB_URI, {
+        await mongoose.connect(keys.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false
