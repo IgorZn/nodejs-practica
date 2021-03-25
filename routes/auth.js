@@ -1,6 +1,24 @@
+// keys
+const keys = require('../keys')
+
 const {Router} = require('express')
 const router = Router()
 var bcrypt = require('bcryptjs')
+
+// email sender
+const nodemailer = require('nodemailer')
+const unisend = require('unisender')
+// const transporter = nodemailer.createTransport(unisend({
+//     api_key: keys.SEND_API,
+//     lang: 'ru'
+// }))
+const uniSender = new unisend({
+                api_key: keys.SEND_API,
+                lang: 'ru'
+            })
+
+
+const regEmail = require('../emails/registration')
 
 // User
 const User = require('../models/user')
@@ -81,6 +99,8 @@ router.post('/register', async (req, res) => {
         }
 
         res.redirect('/auth/login#login')
+        await uniSender.sendEmail(regEmail(email))
+        // await transporter.sendMail(regEmail(email))
 
     } catch (e) {
         console.log(e)
