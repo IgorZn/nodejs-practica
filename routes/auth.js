@@ -99,7 +99,8 @@ router.post('/register', async (req, res) => {
         }
 
         res.redirect('/auth/login#login')
-        await uniSender.sendEmail(regEmail(email))
+
+        await uniSender.sendEmail(regEmail(email, name))
         // await transporter.sendMail(regEmail(email))
 
     } catch (e) {

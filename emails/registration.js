@@ -1,23 +1,19 @@
 // keys
 const keys = require('../keys')
 
-module.exports = function(email) {
+module.exports = function(email, name) {
     return {
+        api_key: keys.SEND_API,
         email: email,
         sender_name: 'Book-Shop',
         sender_email: keys.NO_REPLAY_EMAIL,
         subject: 'Успешная регистрация!',
         body: `
-            <h1>Добро пожаловать в наш магазин</h1>
+            <h1>Добро пожаловать в наш магазин, ${name}</h1>
             <p>Вы успешно создали аккаунт - ${email}</p>
-            <hr />
-            <a href="#">Магазин книг</a>
-        `,
-        lang: 'ru',
-        list_id: 20716981,
-        code: 'invalid_arg',
-        error: '',
-        result: ''
+            `,
+        list_id: 1,
+        lang: 'ru'
     }
 }
 
