@@ -12,7 +12,9 @@ const uniSender = new unisend({
                 api_key: keys.SEND_API,
                 lang: 'ru'
             })
+// emails template
 const regEmail = require('../emails/registration')
+const resetPWD = require('../emails/reset')
 
 // User
 const User = require('../models/user')
@@ -118,16 +120,24 @@ router.post('/reset', (req, res) => {
         crypto.randomBytes(32, async (err, buf) => {
             if (err) {
                 req.flash('error', 'Что-то пошло нетак, попробуйте позднее.')
-                return res.redirect()
+                return res.redirect('/auth/reset')
             }
 
             const token = buf.toString('hex')
             const candidate = await User.findOne({email: req.body.email})
 
             if (candidate) {
+                candidate.resetToken = token
+                candidate.resetTokenExp = Date.now() + 60 * 60 * 1000
+                await candidate.save()
+
+                // отправить письмо на сброс пароля
+                const {email, name} = req.body
+                await uniSender.sendEmail(resetPWD(candidate.email, candidate.name, candidate.resetToken))
+                res.redirect('/auth/login')
 
             } else {
-                req.flash('error', 'Пользователя с таким адресом не зарегестрировано')
+                req.flash('error', 'Пользователя с таким адресом не зарегестрированно.')
                 res.redirect('/auth/reset')
             }
         })
