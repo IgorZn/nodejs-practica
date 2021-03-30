@@ -3,21 +3,15 @@ const keys = require('../keys')
 
 const {Router} = require('express')
 const router = Router()
-var bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs')
+const crypto = require('crypto')
 
 // email sender
-const nodemailer = require('nodemailer')
 const unisend = require('unisender')
-// const transporter = nodemailer.createTransport(unisend({
-//     api_key: keys.SEND_API,
-//     lang: 'ru'
-// }))
 const uniSender = new unisend({
                 api_key: keys.SEND_API,
                 lang: 'ru'
             })
-
-
 const regEmail = require('../emails/registration')
 
 // User
@@ -87,10 +81,12 @@ router.post('/register', async (req, res) => {
         const candidate = await User.findOne({ email })
 
         if (candidate) {
+            // такой пользователь уже есть
             // теперь эту ошибку надо передать на клиента, т.е. в GET
             req.flash('errorRegister', 'Пользователь с таким адресом уже существует')
             res.redirect('/auth/login#register')
         } else {
+            // создаем нового пользователя
             const hashPassword = await bcrypt.hash(password, 10)
             const user = new User({
                 email, name, password: hashPassword, cart:{items: []}
@@ -98,11 +94,43 @@ router.post('/register', async (req, res) => {
             await user.save()
         }
 
+        // перекинуть на страницу входа
         res.redirect('/auth/login#login')
 
+        // отправит письмо о успешной решистрации
         await uniSender.sendEmail(regEmail(email, name))
-        // await transporter.sendMail(regEmail(email))
 
+    } catch (e) {
+        console.log(e)
+    }
+})
+
+router.get('/reset', (req, res) => {
+    res.render('auth/reset', {
+        title: 'Забыли пароль?',
+        error: req.flash('error'),
+
+    })
+})
+
+router.post('/reset', (req, res) => {
+    try {
+        crypto.randomBytes(32, async (err, buf) => {
+            if (err) {
+                req.flash('error', 'Что-то пошло нетак, попробуйте позднее.')
+                return res.redirect()
+            }
+
+            const token = buf.toString('hex')
+            const candidate = await User.findOne({email: req.body.email})
+
+            if (candidate) {
+
+            } else {
+                req.flash('error', 'Пользователя с таким адресом не зарегестрировано')
+                res.redirect('/auth/reset')
+            }
+        })
     } catch (e) {
         console.log(e)
     }

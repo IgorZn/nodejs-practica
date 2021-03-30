@@ -13,17 +13,12 @@ function mapCartItems(cart){
     )
 }
 
-
 function calcPrice(courses){
     return courses.reduce((total, course)=>{
         console.log(course)
         return total += course.price * course.count
     }, 0)
 }
-
-
-
-
 
 
 router.post('/add', auth, async (req, res) => {
