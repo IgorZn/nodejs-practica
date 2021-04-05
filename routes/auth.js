@@ -12,6 +12,7 @@ const uniSender = new unisend({
                 api_key: keys.SEND_API,
                 lang: 'ru'
             })
+
 // emails template
 const regEmail = require('../emails/registration')
 const resetPWD = require('../emails/reset')
@@ -146,8 +147,8 @@ router.post('/reset', (req, res) => {
     }
 })
 
-router.get('/password:token', async (req, res) => {
-    if (req.params.token) {
+router.get('/password/:token', async (req, res) => {
+    if (!req.params.token) {
         return res.redirect('/auth/login')
     }
 
@@ -162,10 +163,34 @@ router.get('/password:token', async (req, res) => {
         } else {
             res.render('auth/password', {
                 title: 'Восстановить доступ',
-                error: res.flash('error'),
+                error: req.flash('error'),
                 userId: user._id.toString(),
                 token: req.params.token
             })
+        }
+
+    } catch (e) {
+        console.log(e)
+    }
+})
+
+router.post('/password', async (req, res) => {
+    try {
+        const user = await User.findOne({
+            _id: req.body.userId,
+            resetToken: req.body.token,
+            resetTokenExp: {$gt: Date.now()}
+        })
+
+        if (user) {
+            user.password = await bcrypt.hash(req.body.password, 10)
+            user.resetToken = undefined
+            user.resetTokenExp = undefined
+            await user.save()
+            res.redirect('/auth/login')
+        } else {
+            req.flash('loginError', 'Время жизни токена истекло')
+            res.redirect('/auth/login')
         }
 
     } catch (e) {

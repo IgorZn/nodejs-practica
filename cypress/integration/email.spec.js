@@ -1,6 +1,8 @@
+const { username, password } = Cypress.env('credentials');
+
 describe('Email', function () {
 
-    beforeEach('Code for every test', () => {
+    beforeEach('Email flow', () => {
         // repetitive code
         // for example login
     })
@@ -13,10 +15,11 @@ describe('Email', function () {
         cy.get('.alert').should('contain', 'Пользователя с таким адресом не зарегестрированно.');
 
     });
+
     it('Redirect to login form if email exist', function () {
         cy.visit('/auth/login#login');
         cy.get('a').contains('Забыли пароль?').click();
-        cy.get('input#email').type('moodak@example.com', {force: true});
+        cy.get('input#email').type(username, {force: true});
         cy.get('button').contains('Сбросить').click();
         cy.location().should((location) => {
           expect(location.pathname).to.eq('/auth/login')
@@ -24,6 +27,13 @@ describe('Email', function () {
         });
 
     });
+
+    it('Can drop password by email', function () {
+        cy.visit('/auth/login#login');
+        cy.get('a').contains('Забыли пароль?').click();
+        cy.get('input#email').type(username, {force: true});
+        cy.get('button').contains('Сбросить').click();
+    })
 
 
 });

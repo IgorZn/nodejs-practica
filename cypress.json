@@ -3,8 +3,8 @@
   "ignoreTestFiles": "**/examples/*",
   "env": {
     "credentials": {
-      "username": "foo@foo",
-      "password": "foo"
+      "username": "'moodak@example.com'",
+      "password": "pAssw0rd"
     }
   }
 }
