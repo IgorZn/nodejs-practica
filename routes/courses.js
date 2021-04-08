@@ -5,16 +5,21 @@ const Course = require('../models/course')
 
 
 router.get('/', async (req, res)=>{
-    const courses = await Course.find().lean()
-        .populate('userId', 'email name')
-        .select('title price img')
+    try {
+        const courses = await Course.find().lean()
+            .populate('userId', 'email name')
+            .select('title price img')
 
     console.log('COURSES get / ', courses)
     res.render('courses', {
         title: 'Курсы',
         isCourses: true,
+        userId: req.user ? req.user._id.toString() : null,
         courses
     })
+    } catch (e) {
+        return e
+    }
 })
 
 router.get('/:id', async (req, res) => {

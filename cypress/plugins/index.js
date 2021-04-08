@@ -17,25 +17,27 @@
  */
 // eslint-disable-next-line no-unused-vars
 
-const User = require('../models/user')
+const User = require('../../models/user')
 const mongoose = require('mongoose')
-const keys = require('./keys')
+const keys = require('../../keys')
 
 module.exports = (on, config) => {
-on('task', {
-        async getToken ({ email }) {
-            await mongoose.connect(keys.MONGODB_URI, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useFindAndModify: false
-            })
-            const user = await User.findOne({email})
-            const token = user.resetToken
+    on('task', {
+            async getUserToken ({ username }) {
+                await mongoose.connect(keys.MONGODB_URI, {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true,
+                    useFindAndModify: false
+                })
+                const user = await User.findOne({email: username})
+                console.log(username)
+                console.log(user)
+                const token = user.resetToken
 
-            return token;
-        },
+                return token;
+            },
 
 
 
-    });
+        });
 }
