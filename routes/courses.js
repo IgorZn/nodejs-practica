@@ -3,6 +3,13 @@ const router = Router()
 const auth = require('../middleware/auth')
 const Course = require('../models/course')
 
+const isOwner = (course, req, res) => {
+    if (course.userId.toString() === req.user._id.toString()){
+        return true
+    } else {
+        return res.redirect('/courses')
+    }
+}
 
 router.get('/', async (req, res)=>{
     try {
@@ -23,12 +30,16 @@ router.get('/', async (req, res)=>{
 })
 
 router.get('/:id', async (req, res) => {
-   const course = await Course.findById(req.params.id).lean()
-   console.log(req.params, course.title)
-   res.render('course', {
-       layout: 'empty',
-       course
-   })
+    try {
+        const course = await Course.findById(req.params.id).lean()
+        console.log(req.params, course.title)
+        res.render('course', {
+            layout: 'empty',
+            course
+        })
+    } catch (e) {
+        return e
+    }
 })
 
 router.get('/:id/edit', auth, async (req, res) => {
@@ -36,24 +47,40 @@ router.get('/:id/edit', auth, async (req, res) => {
     if (!req.query.allow) {
         return res.redirect('/')
     }
-    const course = await Course.findById(req.params.id).lean()
-    console.log('edit', course)
+    try {
+        const course = await Course.findById(req.params.id).lean()
+        isOwner(course, req, res)
+        res.render('course-edit', {
+            title: `Редактировать ${course.title}`,
+            course
+        })
+    } catch (e) {
+        console.log(e)
+    }
 
-    res.render('course-edit', {
-        title: `Курс ${course.title}`,
-        course
-    })
 })
 
 router.post('/edit', auth, async (req, res) => {
-    await Course.findByIdAndUpdate(req.body.id, req.body)
-    res.redirect('/courses')
+    try {
+        const course = await Course.findById(req.body.id).lean()
+        if (isOwner(course, req, res)) {
+            await Course.findByIdAndUpdate(req.body.id, req.body)
+            res.redirect('/courses')
+        }
+    } catch (e) {
+        return e
+    }
 })
 
 router.post('/remove', auth, async (req, res) => {
     try {
-        await Course.deleteOne({_id: req.body.id})
-        res.redirect('/courses')
+        const course = await Course.findById(req.body.id).lean()
+        if (isOwner(course, req, res)) {
+            await Course.deleteOne({_id: req.body.id})
+            res.redirect('/courses')
+        }
+
+
     } catch (e) {
         console.log(e)
     }

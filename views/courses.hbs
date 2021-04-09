@@ -14,7 +14,9 @@
                 <div class="card-action actions">
                   <a href="/courses/{{_id}}" target="_blank">Открыть курс</a>
                     {{#if @root.isAuth}}
+                        {{#ifeq userId._id @root.userId}}
                           <a href="/courses/{{_id}}/edit?allow=true" target="_blank">Редактировать</a>
+                        {{/ifeq}}
                             <form action="/card/add" method="post">
 
                                 <!--
@@ -34,7 +36,9 @@
                                -->
                             <input type="hidden" name="_csrf" value="{{@root.csrf}}">
                             <input type="hidden" name="id" value="{{_id}}">
+                        {{#ifeq userId._id @root.userId}}
                             <button class="btn red">Удалить курс</button>
+                        {{/ifeq}}
                         </form>
                     {{/if}}
               </div>

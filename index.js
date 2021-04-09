@@ -46,7 +46,10 @@ const hbs = exphbs.create({
     // defaultLayout -- основной слой -- будет main
     defaultLayout: 'main',
     // название расширения
-    extname: 'hbs'
+    extname: 'hbs',
+    // еще один слой
+    helpers: require('./utils/hbs-helpers')
+
 })
 
 // регистрируем двигло и наз. он 'hbs' т.к. extname: 'hbs'
