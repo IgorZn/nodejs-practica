@@ -20,6 +20,9 @@ const resetPWD = require('../emails/reset')
 // User
 const User = require('../models/user')
 
+// Validator
+const {body, validationResult} = require('express-validator/check')
+
 router.get('/login', async (req, res)=>{
     res.render('auth/login', {
         title: 'Авторизация',
@@ -78,10 +81,15 @@ router.get('/logout', async (req, res)=>{
     } )
 })
 
-router.post('/register', async (req, res) => {
+router.post('/register', body('username').isEmail(), async (req, res) => {
     try {
-        const {email, password, repeat, name} = req.body
+        const {email, password, confirm, name} = req.body
         const candidate = await User.findOne({ email })
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash('errorRegister', errors.array()[0].msg = 'Ты ахуел?')
+            return res.status(422).redirect('/auth/login#register')
+        }
 
         if (candidate) {
             // такой пользователь уже есть

@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
+const { username, password } = Cypress.env('credentials');
 
-const logIn = () => {
-    const { username, password } = Cypress.env('credentials');
+const logIn = (username=username, password=password) => {
 
     // Capture HTTP requests.
     cy.server();
@@ -33,24 +33,6 @@ describe('Authentication', function () {
         // for example login
     })
 
-    it('Can log in.', function () {
-        logIn();
-        cy.on('uncaught:exception', (err, runnable) => {
-            expect(err.message).to.include(err.message)
-
-            // using mocha's async done callback to finish
-            // this test so we prove that an uncaught exception
-            // was thrown
-            done()
-
-            // return false to prevent the error from
-            // failing this test
-            return false
-        })
-        cy.hash().should('eq', '');
-
-    });
-
     it('Can sign up.', function () {
         cy.server();
         cy.route({
@@ -70,13 +52,31 @@ describe('Authentication', function () {
         cy.visit('/auth/login#login');
         cy.get('a').contains('Регистрация').click();
         cy.get('input#name').type('Gary', {force: true});
-        cy.get('input#remail').type('moodak@example.com', {force: true});
-        cy.get('input#rpassword').type('pAssw0rd', {log: false, force: true});
+        cy.get('input#remail').type(username, {force: true});
+        cy.get('input#rpassword').type(password, {log: false, force: true});
         cy.get('input#confirm').type('pAssw0rd', {log: false, force: true});
 
         cy.get('button').contains('Зарегистрироваться').click();
         // cy.wait('@signUp'); // new
         cy.hash().should('eq', '');
+    });
+
+    it('Can log in.', function () {
+        logIn('foo@foo', 'foo');
+        cy.on('uncaught:exception', (err, runnable) => {
+            expect(err.message).to.include(err.message)
+
+            // using mocha's async done callback to finish
+            // this test so we prove that an uncaught exception
+            // was thrown
+            done()
+
+            // return false to prevent the error from
+            // failing this test
+            return false
+        })
+        cy.hash().should('eq', '');
+
     });
 
     it('Contains JQuery', function () {
@@ -149,7 +149,6 @@ describe('Authentication', function () {
     it('Can NOT log message if password is wrong', function () {
         // Log into the app.
         cy.visit('/auth/login#login');
-        const { username} = Cypress.env('credentials');
         cy.get('input#email').type(username, {force: true});
         cy.get('input#password').type('password', { log: false, force: true});
         cy.get('button').contains('Войти').click();
@@ -158,6 +157,23 @@ describe('Authentication', function () {
           expect(location.hash).to.eq('#login')
           expect(location.protocol).to.eq('http:')
         })
+
+    });
+
+    it('Can NOT register with wrong email', function () {
+        cy.visit('/auth/login#register');
+        cy.get('a').contains('Регистрация').click();
+        cy.get('input#name').type('Gary', {force: true});
+        cy.get('input#remail').type(username, {force: true});
+        cy.get('input#rpassword').type(password, {log: false, force: true});
+        cy.get('input#confirm').type(password, {log: false, force: true});
+
+        cy.get('button').contains('Зарегистрироваться').click();
+        cy.get('.alert').should('contain', 'Ты ахуел?');
+        cy.location().should((location) => {
+            expect(location.hash).to.eq('#register')
+            expect(location.protocol).to.eq('http:')
+        });
 
     });
 
