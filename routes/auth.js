@@ -21,7 +21,8 @@ const resetPWD = require('../emails/reset')
 const User = require('../models/user')
 
 // Validator
-const {body, validationResult} = require('express-validator/check')
+const {validationResult} = require('express-validator/check')
+const {registerValidators} = require('../utils/validators')
 
 router.get('/login', async (req, res)=>{
     res.render('auth/login', {
@@ -81,13 +82,15 @@ router.get('/logout', async (req, res)=>{
     } )
 })
 
-router.post('/register', body('username').isEmail(), async (req, res) => {
+// registerValidators -- добавили как middleware
+
+router.post('/register', registerValidators, async (req, res) => {
     try {
         const {email, password, confirm, name} = req.body
         const candidate = await User.findOne({ email })
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            req.flash('errorRegister', errors.array()[0].msg = 'Ты ахуел?')
+            req.flash('errorRegister', errors.array()[0].msg)
             return res.status(422).redirect('/auth/login#register')
         }
 
