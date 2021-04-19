@@ -18,7 +18,7 @@
 // eslint-disable-next-line no-unused-vars
 
 const User = require('../../models/user')
-const mongoose = require('mongoose')
+const MongoClient = require('mongodb').MongoClient
 const keys = require('../../keys')
 
 module.exports = (on, config) => {
@@ -37,7 +37,21 @@ module.exports = (on, config) => {
                 return token;
             },
 
-
+            deleteUser(id) {
+              return new Promise((resolve) => {
+                MongoClient.connect(MONGODB_URI, (err, client) => {
+                  if (err) {
+                    console.log(`MONGO CONNECTION ERROR: ${err}`)
+                    throw err;
+                  } else {
+                    client.collection('users').count({}, function(error, numOfDocs){
+                      resolve({success: numOfDocs})
+                      client.close();
+                    })
+                  }
+                });
+              }); // end of return Promise
+            }
 
         });
 }

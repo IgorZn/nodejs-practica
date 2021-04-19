@@ -86,27 +86,19 @@ router.get('/logout', async (req, res)=>{
 
 router.post('/register', registerValidators, async (req, res) => {
     try {
-        const {email, password, confirm, name} = req.body
-        const candidate = await User.findOne({ email })
+        const {email, password, name} = req.body
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             req.flash('errorRegister', errors.array()[0].msg)
             return res.status(422).redirect('/auth/login#register')
         }
 
-        if (candidate) {
-            // такой пользователь уже есть
-            // теперь эту ошибку надо передать на клиента, т.е. в GET
-            req.flash('errorRegister', 'Пользователь с таким адресом уже существует')
-            res.redirect('/auth/login#register')
-        } else {
-            // создаем нового пользователя
-            const hashPassword = await bcrypt.hash(password, 10)
-            const user = new User({
-                email, name, password: hashPassword, cart:{items: []}
-            })
-            await user.save()
-        }
+        // создаем нового пользователя
+        const hashPassword = await bcrypt.hash(password, 10)
+        const user = new User({
+            email, name, password: hashPassword, cart:{items: []}
+        })
+        await user.save()
 
         // перекинуть на страницу входа
         res.redirect('/auth/login#login')
