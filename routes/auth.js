@@ -22,7 +22,7 @@ const User = require('../models/user')
 
 // Validator
 const {validationResult} = require('express-validator/check')
-const {registerValidators} = require('../utils/validators')
+const {registerValidators, loginValidators} = require('../utils/validators')
 
 router.get('/login', async (req, res)=>{
     res.render('auth/login', {
@@ -33,7 +33,7 @@ router.get('/login', async (req, res)=>{
     })
 })
 
-router.post('/login', async (req, res)=>{
+router.post('/login', loginValidators, async (req, res)=>{
     try {
         // получить логин и пароль из "сессии"
         const {email, password} = req.body

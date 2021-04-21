@@ -1,6 +1,9 @@
 <h2>Добавить</h2>
+{{#if error}}
+    <p class="alert">{{error}}</p>
+{{/if}}
 
-<form action="/add" method="post">
+<form action="/add" method="post" novalidate>
     <div class="input-field">
           <input id="title" name="title" type="text" class="validate" required>
           <label for="title">Название курса</label>

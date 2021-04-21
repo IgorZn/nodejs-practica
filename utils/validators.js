@@ -5,24 +5,48 @@ const {body} = require('express-validator/check')
 const User = require('../models/user')
 
 exports.registerValidators = [
-    body('email', 'Хуево e-mail написал! Еще разок давай и без ошибок.').isEmail().custom(
+    body('email', 'Хуево e-mail написал! Еще разок давай и без ошибок.')
+        .isEmail()
+        .custom(
         async (value, {req}) => {
             try {
-                const user = User.findOne({email: value})
-                if (user) {
+                const user = await User.find({email: value})
+                console.log(user)
+                if (user.length) {
                     return Promise.reject('Пользователь с таким email уже зарегестрирован')
                 }
             } catch (e) {
                 console.log(e)
             }
         }
-    ),
-    body('password', 'Че PASSWORD такой короткий, мля?').isLength({min:6}),
-    body('confirm').custom( (value, {req}) => {
+    ).normalizeEmail(),
+
+    body('password', 'Че PASSWORD такой короткий, мля?')
+        .isLength({min:6})
+        .trim(),
+
+    body('confirm')
+        .custom( (value, {req}) => {
         if (value !== req.body.password) {
             throw new Error('Пароли не совпадают')
         }
         return true
-    } ),
-    body('name', 'Имя минимум два символа').isLength({min: 2})
+    } )
+        .trim(),
+
+    body('name', 'Имя минимум два символа')
+        .isLength({min: 2})
+        .trim()
+]
+
+exports.loginValidators = [
+    body('email', 'email еще разок и давай без ошибок.')
+        .isEmail()
+        .normalizeEmail(),
+]
+
+exports.courseValidators = [
+    body('title').isLength({min: 3}).withMessage('Минимальная длина названия 3 символа').trim(),
+    body('price').isNumeric().withMessage('Введите корректное число').trim(),
+    body('img', 'Введите корректный URL картинки').isURL()
 ]
