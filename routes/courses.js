@@ -3,6 +3,9 @@ const router = Router()
 const auth = require('../middleware/auth')
 const Course = require('../models/course')
 
+// Validators
+const {courseValidators} = require('../utils/validators')
+
 const isOwner = (course, req, res) => {
     if (course.userId.toString() === req.user._id.toString()){
         return true
@@ -60,7 +63,7 @@ router.get('/:id/edit', auth, async (req, res) => {
 
 })
 
-router.post('/edit', auth, async (req, res) => {
+router.post('/edit', courseValidators, auth, async (req, res) => {
     try {
         const course = await Course.findById(req.body.id).lean()
         if (isOwner(course, req, res)) {

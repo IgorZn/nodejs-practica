@@ -23,7 +23,12 @@ router.post('/', auth, courseValidators, async (req, res) => {
             {
                 title: 'Добавить курс',
                 isAdd: true,
-                error: errors.array()[0].msg
+                error: errors.array()[0].msg,
+                data: {
+                    title: req.body.title,
+                    price: req.body.price,
+                    img: req.body.img,
+                }
             })
     }
 
