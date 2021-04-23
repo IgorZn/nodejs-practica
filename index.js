@@ -36,6 +36,7 @@ const homeCourses = require('./routes/courses')
 const homeCard = require('./routes/card')
 const homeOrders = require('./routes/orders')
 const authRoutes = require('./routes/auth')
+const profileRoutes = require('./routes/profile')
 
 // setup route middlewares
 // var csrfProtection = csrf({ cookie: true })
@@ -103,6 +104,7 @@ app.use('/courses', homeCourses)
 app.use('/card', homeCard)
 app.use('/orders', homeOrders)
 app.use('/auth', authRoutes)
+app.use('/profile', profileRoutes)
 
 // 404
 app.use(errorHandler)

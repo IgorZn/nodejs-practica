@@ -33,6 +33,13 @@
                 <li><a href="/card">Корзина</a></li>
           {{/if}}
 
+          <!--   Profile   -->
+          {{#if isProfile}}
+              <li class="active"><a href="/profile">Профиль</a></li>
+          {{else}}
+                <li><a href="/profile">Профиль</a></li>
+          {{/if}}
+
           <!--   Order   -->
           {{#if isOrders}}
               <li class="active"><a href="/orders">Заказы</a></li>
