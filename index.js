@@ -24,6 +24,7 @@ const store = new MongoStore({
  // Various
 const varMiddleWare = require('./middleware/variables')
 const userMiddleWare = require('./middleware/user')
+const errorHandler = require('./middleware/error')
 
 // User
 // const User = require('./models/user')
@@ -103,9 +104,10 @@ app.use('/card', homeCard)
 app.use('/orders', homeOrders)
 app.use('/auth', authRoutes)
 
+// 404
+app.use(errorHandler)
 
-
-
+// Run app
 async function start(){
     try {
         // Connect to DB
