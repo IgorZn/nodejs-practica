@@ -51,3 +51,8 @@ thead {
     margin-bottom: 1rem;
     background: rgb(252, 201, 27);
 }
+
+.ava {
+    max-width: 150px;
+    height: auto;
+}
