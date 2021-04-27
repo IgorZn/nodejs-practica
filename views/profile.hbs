@@ -4,7 +4,11 @@
     <div class="col s6">
         <div class="card">
             <div class="card-image">
-                <img src="https://124ural.ru/wp-content/uploads/2017/04/no-avatar.png">
+                {{#if user.avatarURL}}
+                    <img src="{{user.avatarURL}}" alt="{{user.name}}">
+                {{else}}
+                    <img src="https://124ural.ru/wp-content/uploads/2017/04/no-avatar.png" alt="Default avatar">
+                {{/if}}
                 <div class="card-panel teal">
                     <p class="white-text">{{user.name}}</p>
                 </div>

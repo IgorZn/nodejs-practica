@@ -25,6 +25,7 @@ const store = new MongoStore({
 const varMiddleWare = require('./middleware/variables')
 const userMiddleWare = require('./middleware/user')
 const errorHandler = require('./middleware/error')
+const fileMiddleware = require('./middleware/file')
 
 // User
 // const User = require('./models/user')
@@ -74,6 +75,15 @@ app.use(session({
     saveUninitialized: false,
     store
 }))
+
+/*
+
+*   single -- загружаем один фаил,
+*   'avatar' -- название поля, куда этот фаил будет складывается
+*   при обработке формы мы будем следить именно за этим полем
+*
+* */
+app.use(fileMiddleware.single('avatar'))
 
 app.use(csrf())
 app.use(flash())
