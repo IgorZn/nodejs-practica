@@ -25,7 +25,7 @@ const store = new MongoStore({
 const varMiddleWare = require('./middleware/variables')
 const userMiddleWare = require('./middleware/user')
 const errorHandler = require('./middleware/error')
-const fileMiddleware = require('./middleware/file')
+
 
 // User
 // const User = require('./models/user')
@@ -68,6 +68,7 @@ app.set('views', 'views')
 // вызвали use -- подгрузка нов. функционала [midlleware]
 // static folder
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use(express.urlencoded({extended: true}))
 app.use(session({
     secret: keys.SECRET,
@@ -83,7 +84,7 @@ app.use(session({
 *   при обработке формы мы будем следить именно за этим полем
 *
 * */
-app.use(fileMiddleware.single('avatar'))
+// app.use(fileMiddleware.single('avatar'))
 
 app.use(csrf())
 app.use(flash())

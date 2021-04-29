@@ -3,6 +3,10 @@ const User = require('../models/user')
 const {Router} = require('express')
 const auth = require('../middleware/auth')
 const router = Router()
+const fileMiddleware = require('../middleware/file')
+
+// const multer  = require('multer')
+// const fileMiddleware = multer({ dest: 'images' })
 
 
 // Routers
@@ -14,7 +18,7 @@ router.get('/', auth, async (req, res) => {
     })
 })
 
-router.post('/', auth, async (req, res) => {
+router.post('/', fileMiddleware.single('avatar'), auth, async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
         const toChange = {
@@ -23,7 +27,7 @@ router.post('/', auth, async (req, res) => {
 
         console.log(req.file)
         if (req.file) {
-            toChange.avatarURL = ''
+            toChange.avatarURL = req.file.path
         }
 
         Object.assign(user, toChange)

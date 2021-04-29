@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="card-content">
-                <form action="/profile" method="post">
+                <form action="/profile/?_csrf={{csrf}}" method="post" enctype="multipart/form-data">
                     <p>Ваш e-mail: {{user.email}}</p>
                     <p>. . . . . . . . . . . . . .</p>
                     <div class="input-field">
@@ -25,7 +25,7 @@
                         <div class="file-field input-field">
                             <div class="btn">
                                 <span>File</span>
-                                <input type="file">
+                                <input type="file" name="avatar">
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" name="file">
@@ -37,12 +37,12 @@
                         req.csrfToken() вставит в value `token,
                         который будет назначен res.locals.csrf в  variables.js
                         -->
-                        <input type="hidden" name="_csrf" value="{{csrf}}">
+<!--                        <input type="hidden" name="_csrf" id="_csrf" value="{{csrf}}">-->
                         <button class="btn btn-primary">Изменить</button>
 
+                    </div>
                 </form>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>

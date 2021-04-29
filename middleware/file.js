@@ -1,21 +1,22 @@
 const multer = require('multer')
 
 const genFileName = (filename) => {
-    return new Date().toISOString().replaceAll(':','-') + '__' + file.originalname
+    return new Date().toISOString().replace(/:/g,'-') + '__' + filename.originalname
 }
 const storage = multer.diskStorage({
-    destination(req, file, cb){
+     destination: function (req, file, cb){
         cb(null, 'images')
     },
-    filename(req, file, cb){
+    filename: function (req, file, cb){
         cb(null, genFileName(file))
     }
 })
 const allowTypes = ['image/png', 'image/jpg', "image/jpeg"]
 const fileFilter = (req, file, cb) => {
-    if (file.mimeType in allowTypes) {
+    if ( allowTypes.indexOf(file.mimetype) !== -1 ) {
         // валидация прошла успешно
         cb(null, true)
+
     } else {
         // проблемы с валидацией
         cb(null, false)
@@ -23,5 +24,6 @@ const fileFilter = (req, file, cb) => {
 }
 
 module.exports = multer({
-    storage, fileFilter
+    storage: storage,
+    fileFilter: fileFilter
 })
