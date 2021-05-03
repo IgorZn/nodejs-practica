@@ -1,5 +1,3 @@
-const PWD = 'QhdiCOhl6tFVHmBW'
-const USER_NAME = 'igor_zn'
 
 module.exports = {
     MONGODB_URI: process.dev.MONGODB_URI,
