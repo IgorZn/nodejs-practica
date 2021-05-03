@@ -7,6 +7,7 @@ const helmet = require('helmet')
 const compression = require('compression')
 
 const keys = require('./keys')
+console.log(keys)
 
 // var cookieParser = require('cookie-parser')
 const csrf = require('csurf')
