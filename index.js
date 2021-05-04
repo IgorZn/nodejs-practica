@@ -6,8 +6,8 @@ const mongoose = require('mongoose')
 const helmet = require('helmet')
 const compression = require('compression')
 
-const keys = require('./keys')
-console.log(keys)
+// const keys = require('./keys')
+require('dotenv').config()
 
 // var cookieParser = require('cookie-parser')
 const csrf = require('csurf')
@@ -21,7 +21,7 @@ const MongoStore = require('connect-mongodb-session')(session)
 // MONGODB
 const store = new MongoStore({
     collection: 'sessions',
-    uri: keys.MONGODB_URI
+    uri: process.env.MONGODB_URI
 })
 
  // Various
@@ -74,7 +74,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use(express.urlencoded({extended: true}))
 app.use(session({
-    secret: keys.SECRET,
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
     store
@@ -129,7 +129,7 @@ app.use(errorHandler)
 async function start(){
     try {
         // Connect to DB
-        await mongoose.connect(keys.MONGODB_URI, {
+        await mongoose.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false
